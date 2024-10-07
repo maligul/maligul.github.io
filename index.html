@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Python Bot Yöneticisi</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <h1>Python Bot Yöneticisi</h1>
+    
+    <a href="upload.html">Yeni Bot Yükle</a>
+    <br>
+    <a href="live-debug.html">Canlı debug yap</a>
 
+    <h2>Python Botları</h2>
+    <ul id="scriptList" class="script-list">
+        <li class="script-item">
+            <span>örnek_bot.py</span>
+            <label class="switch">
+                <input type="checkbox" onchange="toggleScript('örnek_bot.py', this.checked)">
+                <span class="slider"></span>
+            </label>
+        </li>
+    </ul>
+
+    <h2>Log Alanı</h2>
+    <div id="logArea"><p>örnek_bot.py yüklendi.</p></div>
+
+    <h2>Dosyalar</h2>
+    <ul id="fileList" class="file-list">
+        <li class="file-item">
+            <span>dosya1.csv</span>
+            <button onclick="downloadFile('dosya1.csv')">İndir</button>
+        </li>
+        <li class="file-item">
+            <span>dosya2.csv</span>
+            <button onclick="downloadFile('dosya2.csv')">İndir</button>
+        </li>
+    </ul>
+
+    <script src="js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Yeni Bot Yükle ve Yapılandır</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Yeni Bot Yükle ve Yapılandır</h1>
+    
+    <input type="file" id="fileInput" accept=".py">
+    <button onclick="uploadFile()">Dosyayı Yükle</button>
+    
+    <div class="config-section">
+        <h2>Yapılandırma</h2>
+        <label for="pythonVersion">Python Sürümü:</label>
+        <select id="pythonVersion">
+            <option value="3.7">Python 3.7</option>
+            <option value="3.8">Python 3.8</option>
+            <option value="3.9">Python 3.9</option>
+            <option value="3.10">Python 3.10</option>
+            <option value="3.11">Python 3.11</option>
+        </select>
+    </div>
+
+    <button onclick="openConfigModal()">Sisteme Parametre Ekle</button>
+
+    <div id="configModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeConfigModal()">&times;</span>
+            <h2>Sistem Parametreleri</h2>
+            <input type="text" id="configKey" placeholder="Anahtar">
+            <span>=</span>
+            <input type="text" id="configValue" placeholder="Değer">
+            <button onclick="addConfig()">Ekle</button>
+            <div id="configList"></div>
+        </div>
+    </div>
+
+    <div class="config-section">
+        <h3>Paket Yönetimi</h3>
+        <input type="text" id="packageSearch" placeholder="Paket ara..." oninput="debounce(suggestPackages, 300)()"> <br><br>
+        <select id="packageSelect" size="5" onchange="selectPackage()">
+            <option value="">Paket seçin veya arayın...</option>
+        </select>
+        <div id="selectedPackages">
+            <h4>Seçilen Paketler:</h4>
+            <ul id="selectedPackageList"></ul>
+        </div>
+    </div>
+
+    <div class="config-section">
+        <h3>İşletim Sistemi</h3>
+        <select id="osSelect">
+            <option value="">İşletim sistemi seçin...</option>
+            <option value="ubuntu20.04">Ubuntu 20.04 LTS</option>
+            <option value="ubuntu22.04">Ubuntu 22.04 LTS</option>
+            <option value="debian10">Debian 10 (Buster)</option>
+            <option value="debian11">Debian 11 (Bullseye)</option>
+            <option value="centos7">CentOS 7</option>
+            <option value="centos8">CentOS 8</option>
+            <option value="fedora34">Fedora 34</option>
+            <option value="fedora35">Fedora 35</option>
+        </select>
+    </div> <br><br>
+
+    <div class="config-section">
+        <h3>Custom Komutlar</h3>
+        <input type="text" id="customCommandInput" placeholder="Custom komut ekle...">
+        <button onclick="addCustomCommand()">Ekle</button>
+        <ul id="customCommandList"></ul>
+    </div> <br><br>
+
+    <button onclick="saveConfiguration()">Yapılandırmayı Kaydet</button>
+
+    <h2>Log Alanı</h2>
+    <div id="logArea"></div>
+
+    <h2>Debug Log</h2>
+    <div id="debugLog" style="height: 50px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;"></div>
+
+    <br>
+    <a href="index.html">Ana Sayfaya Dön</a>
+    <br>
+    <a href="live-debug.html">Canlı debug yap</a>
+
+    <script src="js/packages.js"></script>
+    <script src="js/upload.js"></script>
+    <script>
+        function openConfigModal() {
+            document.getElementById('configModal').style.display = 'block';
+        }
+
+        function closeConfigModal() {
+            document.getElementById('configModal').style.display = 'none';
+        }
+
+        function addConfig() {
+            const key = document.getElementById('configKey').value;
+            const value = document.getElementById('configValue').value;
+            if (key && value) {
+                const configList = document.getElementById('configList');
+                const configItem = document.createElement('div');
+                configItem.textContent = `${key} = ${value}`;
+                configList.appendChild(configItem);
+                document.getElementById('configKey').value = '';
+                document.getElementById('configValue').value = '';
+            }
+        }
+
+        // Pencere dışına tıklandığında modal'ı kapatma
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('configModal')) {
+                closeConfigModal();
+            }
+        }
+    </script>
+</body>
+</html>
